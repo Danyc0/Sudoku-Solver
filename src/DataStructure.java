@@ -3,11 +3,18 @@ public class DataStructure {
 	private Cell[][] rows;
 	private Cell[][] collumn;
 	private Cell[][] square;
-	DataStructure(int[][]grid){
-		rows = new Cell[9][9]; //THINK ABOUT SIZE SUBSIZE WHERE 9 IS SIZE AND 3 IS SUBSIZE IN THIS EXAMPLE
-		collumn = new Cell[9][9];
-		square = new Cell[9][9];
-		populate(grid);
+	private int gridSize;
+	private int gridSubSize;
+	DataStructure(int[][]grid, int size, int subsize) throws subsizeNotFactorException{
+		if((size % subsize) != 0){
+			throw new subsizeNotFactorException();
+		}
+		else{
+			rows = new Cell[9][9]; //THINK ABOUT SIZE SUBSIZE WHERE 9 IS SIZE AND 3 IS SUBSIZE IN THIS EXAMPLE
+			collumn = new Cell[9][9];
+			square = new Cell[9][9];
+			populate(grid);
+		}
 	}
 	
 	public void populate(int[][]grid){
