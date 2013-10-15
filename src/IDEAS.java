@@ -10,4 +10,8 @@
 
 
 	SIZE / SUBSIZE IDEA FOR DataStructure.java SEE THE NOTE ON LINE 7
+	
+	
+	
+	MOVE OUTPUT ROWS/COLLUMS/SQUAREASLINE TO DataStructure.java
 */

@@ -163,6 +163,7 @@ public class Solver {
 				
 			}
 		}
+		outputRows();
 	}
 
 	private boolean[] makeTrueArray(int size) {
