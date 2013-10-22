@@ -4,7 +4,7 @@ public class Main {
 	/**
 	 * @param args
 	 */
-	private final static String defaultPath = "/home/daniel/SudokuData/simple351.sud";
+	private final static String defaultPath = "/home/daniel/SudokuData/book62.sud";
 	public static void main(String[] args) {
 		Solver solver;
 		try{

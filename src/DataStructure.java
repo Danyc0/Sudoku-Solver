@@ -1,20 +1,27 @@
 
 public class DataStructure {
 	private Cell[][] rows;
-	private Cell[][] collumn;
-	private Cell[][] square;
-	private int gridSize;
-	private int gridSubSize;
-	DataStructure(int[][]grid, int size, int subsize) throws subsizeNotFactorException{
-		if((size % subsize) != 0){
-			throw new subsizeNotFactorException();
+	private Cell[][] collumns;
+	private Cell[][] squares;
+	DataStructure(int[][]grid){
+		rows = new Cell[9][9]; //THINK ABOUT SIZE SUBSIZE WHERE 9 IS SIZE AND 3 IS SUBSIZE IN THIS EXAMPLE
+		collumns = new Cell[9][9];
+		squares = new Cell[9][9];
+		populate(grid);
+	}
+	
+	public boolean equals(DataStructure other){
+		if(other == null){
+			return false;
 		}
-		else{
-			rows = new Cell[9][9]; //THINK ABOUT SIZE SUBSIZE WHERE 9 IS SIZE AND 3 IS SUBSIZE IN THIS EXAMPLE
-			collumn = new Cell[9][9];
-			square = new Cell[9][9];
-			populate(grid);
+		for(int i = 0; i<this.getRows().length; i++){
+			for(int j = 0; j<this.getRows()[i].length; j++){
+				if(!(this.getRow(i)[j].equals(other.getRow(i)[j]))){
+					return false;
+				}
+			}
 		}
+		return true;
 	}
 	
 	public void populate(int[][]grid){
@@ -23,7 +30,7 @@ public class DataStructure {
 			for(int j = 0; j<9; j++){
 				Cell myCell = new Cell(i, j, grid[i][j]);
 				rows[i][j] = myCell;
-				collumn[j][i] = myCell;
+				collumns[j][i] = myCell;
 				int countNum;
 				if(i<3){
 					if(j<3){
@@ -58,7 +65,7 @@ public class DataStructure {
 						countNum = 8;
 					}
 				}
-				square[countNum][count[countNum]] = myCell;
+				squares[countNum][count[countNum]] = myCell;
 				count[countNum]++;
 			}
 		}
@@ -68,12 +75,16 @@ public class DataStructure {
 		return this.rows[rowNum];
 	}
 	
+	public Cell[][] getRows(){
+		return this.rows;
+	}
+	
 	public Cell[] getCollumn(int collumnNum){
-		return this.collumn[collumnNum];
+		return this.collumns[collumnNum];
 	}
 
 	public Cell[] getSquare(int squareNum) {
-		return this.square[squareNum];
+		return this.squares[squareNum];
 	}
 
 	public void setValue(Cell cell, int targetNumber) {
@@ -99,4 +110,55 @@ public class DataStructure {
 		}
 		return mostCommon;
 	}
+
+	public boolean checkForTargetNumber(int i, int targetNumber, char rowCollumnSquare) {
+		if(rowCollumnSquare == 'r'){
+			return searchForNumber(rows[i], targetNumber);
+		}
+		if(rowCollumnSquare == 'c'){
+			return searchForNumber(collumns[i], targetNumber);
+		}
+		if(rowCollumnSquare == 's'){
+			return searchForNumber(squares[i], targetNumber);
+		}
+		return false;
+	}
+
+	private boolean searchForNumber(Cell[] cells, int targetNumber) {
+		for(Cell currentCell : cells){
+			if(currentCell.getValue() == targetNumber){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean[] addAlreadyFilledCells(boolean[] thisSquare, int targetSquare, char rowCollumnSquare) {
+		Cell[] rowCollumnSquareArray = new Cell[9];
+		if(rowCollumnSquare == 'r'){
+			rowCollumnSquareArray = rows[targetSquare];
+		}
+		if(rowCollumnSquare == 'c'){
+			rowCollumnSquareArray = collumns[targetSquare];
+		}
+		if(rowCollumnSquare == 's'){
+			rowCollumnSquareArray = squares[targetSquare];
+		}
+		for(int i = 0; i < rowCollumnSquareArray.length; i++){
+			if(rowCollumnSquareArray[i].getValue() != 0){
+				thisSquare[i] = false;
+			}
+		}
+		return thisSquare;
+	}
+
+	public Cell[] getRowCollumnSquare(int value, char rowCollumnSquare) {
+		switch(rowCollumnSquare){
+		case 'r' : return getRow(value);
+		case 'c' : return getCollumn(value);
+		case 's' : return getSquare(value);
+		}
+		return null;
+	}
+
 }
