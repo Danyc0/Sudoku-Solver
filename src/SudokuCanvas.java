@@ -20,17 +20,11 @@ public class SudokuCanvas extends JPanel {
 	}
 	
 	public void drawGrid(Graphics g) {
-		solver.outputRows();
-		
-		
-		System.out.println();
-		System.out.println("Drawing:");
 		for (int i = 0; i<9; i++){
 			for (int j = 0; j<9; j++){
 				Cell currentCell = solver.getRow(i)[j];
 				int currentValue = currentCell.getValue();
 				int[] currentPensilMarks = currentCell.getPensilMarks();
-				System.out.print(currentValue);
 				g.setColor(new Color(0, 255, 0));
 				g.setFont(new Font("SolvedFont", 10, 25));
 				g.fillRect(10+j*45,10+i*45,40,40);
@@ -60,9 +54,7 @@ public class SudokuCanvas extends JPanel {
 					}
 				}
 			}
-			System.out.println();
 		}
-		System.out.println();
 	}
 	
 	public void importFile(String filePath){

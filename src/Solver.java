@@ -16,7 +16,6 @@ public class Solver {
 	
 	Solver() {
 		puzzleGrid = new DataStructure(new int[9][9]);
-		outputRows();
 	}
 	
 	public Cell[] getRow(int rowNum){
@@ -54,7 +53,6 @@ public class Solver {
 		file.close();
 		puzzleGrid = new DataStructure(arrayPuzzleGrid);
 		updateAllPensilMarks();
-		outputRows();
 	}
 	
 	public String normaliseLength (String line){
@@ -68,31 +66,8 @@ public class Solver {
 	}
 	
 	public void start(){
-		//while(true){
-			//outputMenu();
-			//int technique = readInt("What technique do you want to use? ");
-			//runTechnique(technique);
-			runTechnique(3);
-			updateAllPensilMarks();
-			outputRows();
-		//}
-	}
-	
-	public void outputMenu(){
-		System.out.println("Menu");
-		System.out.println("1. Basic Complete");
-		System.out.println("2. Complete Singles");
-		System.out.println("3. Complete Pairs");
-		System.out.println("4. Exit");
-	}
-	
-	public void runTechnique(int technique){
-		switch(technique){
-			case 1: basicComplete(); break;
-			case 2: completeSingles(); break;
-			case 3: completePairs(); break;
-			case 5: System.exit(0);
-		}
+		completePairs();
+		updateAllPensilMarks();
 	}
 
 	private void completePairs() {
@@ -246,7 +221,6 @@ public class Solver {
 		while(count < 10){
 			updateAllPensilMarks();
 			insertSingles();
-			basicComplete();
 			count ++;
 		}
 	}
@@ -336,83 +310,6 @@ public class Solver {
 					currentCell.removePensilMark(value);
 				}
 			}
-		}
-	}
-
-	public int readInt(String prompt){
-		System.out.print(prompt);
-		int value = 0;
-		Scanner input = new Scanner(System.in);
-		try{
-			value = input.nextInt();
-		}
-		catch(InputMismatchException e){
-			System.out.println("You entered something that's not a number");
-			e.printStackTrace();
-		}
-		//input.close();
-		return value;
-	}
-	
-	private void basicComplete() {
-		int count = 0;
-		while(count < 10){
-			completeBlock('r');
-			completeBlock('c');
-			completeBlock('s');
-			count++;
-		}
-	}
-
-	private void completeBlock(char rowCollumnSquare){
-		for(int i = 0; i<9; i++){
-			int count = 0;
-			Cell emptyCell = null;
-			int sum = 0;
-			for(Cell currentCell : puzzleGrid.getRowCollumnSquare(i, rowCollumnSquare)){
-				if(currentCell.getValue() == 0){
-					count++;
-					emptyCell = currentCell;
-				}
-				sum = sum + currentCell.getValue();
-			}
-			if(count == 1){
-				emptyCell.setValue((45 - sum));
-			}
-		}
-	}
-
-	public void outputRows(){
-		for(int i = 0; i < 9; i++){
-			Cell[] row = puzzleGrid.getRow(i);
-			for(int j = 0; j < 9; j++){
-				System.out.print(row[j].getValue());
-			}
-			System.out.println();
-		}
-	}
-	
-	public void outputCollumns(){
-		int[][] puzzleArray = new int[9][9];
-		for(int i = 0; i < 9; i++){
-			Cell[] collumn = puzzleGrid.getCollumn(i);
-			for(int j = 0; j < 9; j++){
-				puzzleArray[i][j] = (collumn[j].getValue());
-			}
-			System.out.println();
-		}
-		for(int i = 0; i < 9; i++){
-			for(int j = 0; j < 9; j++){
-				System.out.print(puzzleArray[j][i]);
-			}
-			System.out.println();
-		}
-	}
-	
-	public void outputSquareAsLine(int squareNum){
-		Cell[] square = puzzleGrid.getSquare(squareNum);
-		for(int i = 0; i<9; i++){
-			System.out.print(square[i].getValue());
 		}
 	}
 

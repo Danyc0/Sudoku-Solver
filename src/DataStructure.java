@@ -161,4 +161,38 @@ public class DataStructure {
 		return null;
 	}
 
+	public void outputRows(){
+		for(int i = 0; i < 9; i++){
+			Cell[] row = getRow(i);
+			for(int j = 0; j < 9; j++){
+				System.out.print(row[j].getValue());
+			}
+			System.out.println();
+		}
+	}
+	
+	public void outputCollumns(){
+		int[][] puzzleArray = new int[9][9];
+		for(int i = 0; i < 9; i++){
+			Cell[] collumn = getCollumn(i);
+			for(int j = 0; j < 9; j++){
+				puzzleArray[i][j] = (collumn[j].getValue());
+			}
+			System.out.println();
+		}
+		for(int i = 0; i < 9; i++){
+			for(int j = 0; j < 9; j++){
+				System.out.print(puzzleArray[j][i]);
+			}
+			System.out.println();
+		}
+	}
+	
+	public void outputSquareAsLine(int squareNum){
+		Cell[] square = getSquare(squareNum);
+		for(int i = 0; i<9; i++){
+			System.out.print(square[i].getValue());
+		}
+	}
+	
 }
