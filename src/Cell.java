@@ -4,8 +4,8 @@ public class Cell{
 	int row, collumn;
 	boolean[] pensilMarks;
 	public Cell(int x, int y, int value){
-		this.row = x;      //CHECK THESE ARE CORRECT WAY ROUND
-		this.collumn = y;  //
+		this.row = x;
+		this.collumn = y;
 		this.value = value;
 		this.pensilMarks = makeTrueArray(9);
 	}

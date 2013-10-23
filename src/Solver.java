@@ -1,6 +1,9 @@
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -11,6 +14,19 @@ public class Solver {
 		importFile(filePath);
 	}
 	
+	Solver() {
+		puzzleGrid = new DataStructure(new int[9][9]);
+		outputRows();
+	}
+	
+	public Cell[] getRow(int rowNum){
+		return puzzleGrid.getRow(rowNum);
+	}
+	
+	public Cell[][] getRows(){
+		return puzzleGrid.getRows();
+	}
+
 	public void importFile(String filePath){
 		int[][] arrayPuzzleGrid = new int[9][9];
 		Scanner file = null;
@@ -37,6 +53,7 @@ public class Solver {
 		}
 		file.close();
 		puzzleGrid = new DataStructure(arrayPuzzleGrid);
+		updateAllPensilMarks();
 		outputRows();
 	}
 	
@@ -51,12 +68,14 @@ public class Solver {
 	}
 	
 	public void start(){
-		while(true){
-			outputMenu();
-			int technique = readInt("What technique do you want to use? ");
-			runTechnique(technique);
+		//while(true){
+			//outputMenu();
+			//int technique = readInt("What technique do you want to use? ");
+			//runTechnique(technique);
+			runTechnique(3);
+			updateAllPensilMarks();
 			outputRows();
-		}
+		//}
 	}
 	
 	public void outputMenu(){
@@ -213,9 +232,8 @@ public class Solver {
 						found = true;
 					}
 				}
-				if(!found && 
-						block[i].getValue() == 0){
-					System.out.println("Removing " + value + " from " + rowCollumnSquareChar + commonBlockNumber + " cell " + i);
+				if(!found && block[i].getValue() == 0){
+					//System.out.println("Removing " + value + " from " + rowCollumnSquareChar + commonBlockNumber + " cell " + i);
 					block[i].removePensilMark(value);
 					updateAllPensilMarks();
 				}
@@ -397,91 +415,21 @@ public class Solver {
 			System.out.print(square[i].getValue());
 		}
 	}
-	
-	/*public void myWay(){
-		Cell[][] oldData;
-		while(oldData != puzzleGrid.getRows()){
-			oldData = puzzleGrid.getRows();
-			int targetNumber = puzzleGrid.findMostCommonValue();
-			Cell[] targets = findTargetCells(targetNumber);
-			if(targets.length == 1){
-				puzzleGrid.setValue(targets[0], targetNumber);
-			}
-			else{
-				for(Cell targetCell : targets){ //MAYBE USE SOMETHING LIKE THIS INSTEAD(to improve efficiency)? int focusCell = getMostBlockingNumbers(targetNumber);
-					//build my square(in a 1 dimensional bool array) = true
-					boolean[] thisSquare = makeTrueArray(9);
-					//look at other rows in my square
-					int targetSquare = puzzleGrid.getSquareContaining(targetCell);
-					if(targetCell.getRowNumber() % 3 == 0){ //NOT SURE IF CORRECT
-						if(puzzleGrid.checkForTargetNumber((targetCell.getRowNumber()-2), targetNumber, 'r')){
-							thisSquare[0] = false;
-							thisSquare[3] = false;
-							thisSquare[6] = false;
-						}
-						if(puzzleGrid.checkForTargetNumber((targetCell.getRowNumber()-1), targetNumber, 'r')){
-							thisSquare[1] = false;
-							thisSquare[4] = false;
-							thisSquare[7] = false;
-						}
-					}
-					//look at other collumns in my square
-					if(targetCell.getCollumnNumber() % 3 == 0){ //NOT SURE IF CORRECT
-						if(puzzleGrid.checkForTargetNumber((targetCell.getCollumnNumber()-2), targetNumber, 'c')){
-							thisSquare[6] = false;
-							thisSquare[7] = false;
-							thisSquare[8] = false;
-						}
-						if(puzzleGrid.checkForTargetNumber((targetCell.getCollumnNumber()-1), targetNumber, 'c')){
-							thisSquare[3] = false;
-							thisSquare[4] = false;
-							thisSquare[5] = false;
-						}
-					}
-					thisSquare = puzzleGrid.addAlreadyFilledCells(thisSquare, targetSquare, 's');
-					int trues = getTrues(thisSquare);
-					if(trues == 1){
-						puzzleGrid.setValue(targetCell, targetNumber);
-					}
-					
-					/*build my row(in a 1 dimensional bool array)
-					look at other squares in my row
-					look at other collumns in my row
-					build my column(in a 1 dimensional bool array)
-					look at other squares in my column
-					look at other rows in my column
-					//int possibilities[] = get possibilities
-				}
-				
-			}
-		}
-		outputRows();
-	}
 
-	private int getTrues(boolean[] thisSquare) {
-		int trues = 0;
-		for(boolean currentBool : thisSquare){
-			if(currentBool == true){
-				trues++;
+	public void saveCurrentState(String filePath) {
+		PrintWriter outFile = null;
+		try {
+			outFile = new PrintWriter (new OutputStreamWriter (new FileOutputStream (filePath))); //Start the printWriter
+		} catch (FileNotFoundException e) {
+			System.out.println("FileNotFoundException");
+			e.printStackTrace();
+		}
+		for(int i = 0; i < 9; i++){
+			Cell[] row = puzzleGrid.getRow(i);
+			for(int j = 0; j < 9; j++){
+				outFile.print(row[j].getValue());
 			}
+			outFile.println();
 		}
-		return trues;
 	}
-
-	private boolean[] makeTrueArray(int size) {
-		boolean[] trueArray = new boolean[size];
-		for(boolean bool : trueArray){
-			bool = true;
-		}
-		return null;
-	}
-
-	public int[] findTargetSquares(int target){
-		int[] block;
-		int[] 3By3 = get3By3();
-		int[] collumn = getCollumnNumber();
-		int[] row = getRowNumber();
-		return block;
-	}*/
-	
 }
