@@ -1,12 +1,7 @@
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.InputMismatchException;
-import java.util.Scanner;
-
 
 public class Solver {
 	private DataStructure puzzleGrid;
@@ -15,7 +10,7 @@ public class Solver {
 	}
 	
 	Solver() {
-		puzzleGrid = new DataStructure(new int[9][9]);
+		puzzleGrid = new DataStructure();
 	}
 	
 	public Cell[] getRow(int rowNum){
@@ -27,47 +22,12 @@ public class Solver {
 	}
 
 	public void importFile(String filePath){
-		int[][] arrayPuzzleGrid = new int[9][9];
-		Scanner file = null;
-		try {
-			file = new Scanner(new InputStreamReader (new FileInputStream(filePath)));
-		} catch (FileNotFoundException e) {
-			System.out.println("FileNotFoundException");
-			e.printStackTrace();
-		}
-		String line;
-		for(int i = 0; i < 9; i++){
-			if(!file.hasNextLine()){
-				line = "         ";
-			}
-			else{
-				line = file.nextLine();
-			}
-			line = line.replaceAll(" ", "0");
-			for(int j = 0; j < 9; j++){
-				line = normaliseLength(line);
-				char character = line.charAt(j);
-				arrayPuzzleGrid[i][j] = Character.getNumericValue(character);
-			}
-		}
-		file.close();
-		puzzleGrid = new DataStructure(arrayPuzzleGrid);
+		puzzleGrid = new DataStructure(filePath);
 		updateAllPensilMarks();
-	}
-	
-	public String normaliseLength (String line){
-		int lineLength = line.length();
-		if(lineLength < 9){
-			for(int k = 0; k < (9 - lineLength); k++){
-				line = line + "0";
-			}
-		}
-		return line;
 	}
 	
 	public void start(){
 		completePairs();
-		updateAllPensilMarks();
 	}
 
 	private void completePairs() {
@@ -93,13 +53,13 @@ public class Solver {
 		updateAllPensilMarks();
 	}
 
-	private void insertNakedMultiples(int multiple, char blockChar) {
+	private void insertNakedMultiples(int multiple, char blockChar) { //Designed to be expandable to naked triples, but it never quite worked
 		for(int i = 0; i < 9; i++){
 			Cell[] block = null;
 			switch(blockChar){
-			case 'r' : block = puzzleGrid.getRow(i); break;
-			case 'c' : block = puzzleGrid.getCollumn(i); break;
-			case 's' : block = puzzleGrid.getSquare(i); break;
+				case 'r' : block = puzzleGrid.getRow(i); break;
+				case 'c' : block = puzzleGrid.getCollumn(i); break;
+				case 's' : block = puzzleGrid.getSquare(i); break;
 			}
 			Cell[] multipleCells = new Cell[9];
 			int multipleCount = 0;
@@ -114,23 +74,27 @@ public class Solver {
 					}
 				}
 			}
-			for(int j = 0; j < multipleCells.length; j++){
-				if(multipleCells[j] != null){
-					for(int k = (j+1); k < multipleCells.length; k++){
-						if(multipleCells[k] != null){
-							int[] jPensilMarks = multipleCells[j].getPensilMarks();
-							int[] kPensilMarks = multipleCells[k].getPensilMarks();
-							boolean areEqual = true;
-							for(int l = 0; l < multiple; l++){
-								if(jPensilMarks[l] != kPensilMarks[l]){
-									areEqual = false;
-								}
+			insertMultiples(multiple, multipleCells, blockChar, i);
+		}
+	}
+
+	private void insertMultiples(int multiple, Cell[] multipleCells, char blockChar, int i) {
+		for(int j = 0; j < multipleCells.length; j++){
+			if(multipleCells[j] != null){
+				for(int k = (j+1); k < multipleCells.length; k++){
+					if(multipleCells[k] != null){
+						int[] jPensilMarks = multipleCells[j].getPensilMarks();
+						int[] kPensilMarks = multipleCells[k].getPensilMarks();
+						boolean areEqual = true;
+						for(int l = 0; l < multiple; l++){
+							if(jPensilMarks[l] != kPensilMarks[l]){
+								areEqual = false;
 							}
-							if(areEqual){
-								Cell[] cellArray = {multipleCells[j], multipleCells[k]};
-								for(int n = 0; n < multiple; n++){
-									removeOccurancesExcept(blockChar, i, jPensilMarks[n], cellArray);
-								}
+						}
+						if(areEqual){
+							Cell[] cellArray = {multipleCells[j], multipleCells[k]};
+							for(int n = 0; n < multiple; n++){
+								removeOccurancesExcept(blockChar, i, jPensilMarks[n], cellArray);
 							}
 						}
 					}
@@ -314,19 +278,6 @@ public class Solver {
 	}
 
 	public void saveCurrentState(String filePath) {
-		PrintWriter outFile = null;
-		try {
-			outFile = new PrintWriter (new OutputStreamWriter (new FileOutputStream (filePath))); //Start the printWriter
-		} catch (FileNotFoundException e) {
-			System.out.println("FileNotFoundException");
-			e.printStackTrace();
-		}
-		for(int i = 0; i < 9; i++){
-			Cell[] row = puzzleGrid.getRow(i);
-			for(int j = 0; j < 9; j++){
-				outFile.print(row[j].getValue());
-			}
-			outFile.println();
-		}
+		puzzleGrid.saveCurrentState(filePath);
 	}
 }

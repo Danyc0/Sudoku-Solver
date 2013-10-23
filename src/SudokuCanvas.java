@@ -1,16 +1,13 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
 public class SudokuCanvas extends JPanel {
 	protected Solver solver;
-	private MyFrame gui;
-	SudokuCanvas(MyFrame gui){
-		setBackground(Color.white);         
-		this.gui = gui;
+	SudokuCanvas(){
+		setBackground(Color.white);
 		solver = new Solver();
 	}
 	

@@ -5,14 +5,12 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.ArrayList;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -57,7 +55,7 @@ public class GUI extends MyFrame implements ActionListener{
 		
 		int gridSize = 9;
 		Dimension minimumCanvasSize = new Dimension(((gridSize*45) + 15),((gridSize*45) + 15));
-		sudokuCanvas = new SudokuCanvas(this);
+		sudokuCanvas = new SudokuCanvas();
 		sudokuCanvas.setPreferredSize(minimumCanvasSize);
 		sudokuCanvas.setBorder(BorderFactory.createLineBorder(Color.black,5));
 		add(sudokuCanvas, BorderLayout.CENTER);

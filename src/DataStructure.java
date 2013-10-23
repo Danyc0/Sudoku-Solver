@@ -1,13 +1,30 @@
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.Scanner;
+
 
 public class DataStructure {
 	private Cell[][] rows;
 	private Cell[][] collumns;
 	private Cell[][] squares;
-	DataStructure(int[][]grid){
-		rows = new Cell[9][9]; //THINK ABOUT SIZE SUBSIZE WHERE 9 IS SIZE AND 3 IS SUBSIZE IN THIS EXAMPLE
+	DataStructure(String filePath){
+		initializeArrays();
+		populate(importFile(filePath));
+	}
+
+	DataStructure(){
+		initializeArrays();
+		populate(new int[9][9]);
+	}	
+	
+	private void initializeArrays() {
+		rows = new Cell[9][9];
 		collumns = new Cell[9][9];
 		squares = new Cell[9][9];
-		populate(grid);
 	}
 	
 	public boolean equals(DataStructure other){
@@ -22,6 +39,44 @@ public class DataStructure {
 			}
 		}
 		return true;
+	}
+	
+	public int[][] importFile(String filePath){
+		int[][] arrayPuzzleGrid = new int[9][9];
+		Scanner file = null;
+		try {
+			file = new Scanner(new InputStreamReader (new FileInputStream(filePath)));
+		} catch (FileNotFoundException e) {
+			System.out.println("FileNotFoundException");
+			e.printStackTrace();
+		}
+		String line;
+		for(int i = 0; i < 9; i++){
+			if(!file.hasNextLine()){
+				line = "         ";
+			}
+			else{
+				line = file.nextLine();
+			}
+			line = line.replaceAll(" ", "0");
+			for(int j = 0; j < 9; j++){
+				line = normaliseLength(line);
+				char character = line.charAt(j);
+				arrayPuzzleGrid[i][j] = Character.getNumericValue(character);
+			}
+		}
+		file.close();
+		return arrayPuzzleGrid;
+	}
+	
+	public String normaliseLength (String line){
+		int lineLength = line.length();
+		if(lineLength < 9){
+			for(int k = 0; k < (9 - lineLength); k++){
+				line = line + "0";
+			}
+		}
+		return line;
 	}
 	
 	public void populate(int[][]grid){
@@ -192,6 +247,23 @@ public class DataStructure {
 		Cell[] square = getSquare(squareNum);
 		for(int i = 0; i<9; i++){
 			System.out.print(square[i].getValue());
+		}
+	}
+	
+	public void saveCurrentState(String filePath) {
+		PrintWriter outFile = null;
+		try {
+			outFile = new PrintWriter (new OutputStreamWriter (new FileOutputStream (filePath))); //Start the printWriter
+		} catch (FileNotFoundException e) {
+			System.out.println("FileNotFoundException");
+			e.printStackTrace();
+		}
+		for(int i = 0; i < 9; i++){
+			Cell[] row = getRow(i);
+			for(int j = 0; j < 9; j++){
+				outFile.print(row[j].getValue());
+			}
+			outFile.println();
 		}
 	}
 	
