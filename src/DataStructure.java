@@ -6,28 +6,50 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+/**
+ * @author Daniel Clark (dac46@aber.ac.uk)
+ * The class that contains all the cells and manipulates them
+ */
 
 public class DataStructure {
 	private Cell[][] rows;
 	private Cell[][] collumns;
 	private Cell[][] squares;
+	
+	/**
+	 * When constructed this way it will populate the structure with the data read from the file
+	 * @param filePath
+	 */
 	DataStructure(String filePath){
 		initializeArrays();
 		populate(importFile(filePath));
 	}
 
+	/**
+	 * When constructed this way it will populate with an empty array before a file is loaded
+	 */
 	DataStructure(){
 		initializeArrays();
 		populate(new int[9][9]);
 	}	
 	
+	/**
+	 * Creates the data structure for storing all the data, it is 3 2D arrays,
+	 * but they all contain the same data, just stored in a different order, making them very easy to search through
+	 */
 	private void initializeArrays() {
 		rows = new Cell[9][9];
 		collumns = new Cell[9][9];
 		squares = new Cell[9][9];
 	}
 	
+	/**
+	 * Compares two DataStructures
+	 * @param other
+	 * @return
+	 */
 	public boolean equals(DataStructure other){
+	//Implemented to be used when checking if the state of the grid had changed, but didn't have time to implement that
 		if(other == null){
 			return false;
 		}
@@ -41,6 +63,11 @@ public class DataStructure {
 		return true;
 	}
 	
+	/**
+	 * Imports the file at filePath into the program
+	 * @param filePath
+	 * @return
+	 */
 	public int[][] importFile(String filePath){
 		int[][] arrayPuzzleGrid = new int[9][9];
 		Scanner file = null;
@@ -69,6 +96,11 @@ public class DataStructure {
 		return arrayPuzzleGrid;
 	}
 	
+	/**
+	 * Normalises the length of a string to the 9 characters needed for the program
+	 * @param line
+	 * @return
+	 */
 	public String normaliseLength (String line){
 		int lineLength = line.length();
 		if(lineLength < 9){
@@ -79,6 +111,10 @@ public class DataStructure {
 		return line;
 	}
 	
+	/**
+	 * Populates the DataStructure with data from a 2D array of integer values
+	 * @param grid
+	 */
 	public void populate(int[][]grid){
 		int count[] = new int[9];
 		for(int i = 0; i<9; i++){
@@ -134,7 +170,7 @@ public class DataStructure {
 		return this.rows;
 	}
 	
-	public Cell[] getCollumn(int collumnNum){
+	public Cell[] getColumn(int collumnNum){
 		return this.collumns[collumnNum];
 	}
 
@@ -146,7 +182,14 @@ public class DataStructure {
 		rows[cell.getRowNumber()][cell.getCollumnNumber()].setValue(targetNumber);
 	}
 	
+	/**
+	 * Returns the most common value in the array
+	 * @return
+	 */
 	public int findMostCommonValue(){
+	//Was implemented to allow prioritising the order in which the algorithms solve the puzzle,
+	//getting harder each time, as the most common value is probably the easiest to solve,
+	//however this feature was never implemented due to lack of time
 		int[] valueArray = new int[9];
 		for(Cell[] row  : rows){
 			for(Cell cell : row){
@@ -166,19 +209,32 @@ public class DataStructure {
 		return mostCommon;
 	}
 
-	public boolean checkForTargetNumber(int i, int targetNumber, char rowCollumnSquare) {
-		if(rowCollumnSquare == 'r'){
-			return searchForNumber(rows[i], targetNumber);
+	/**
+	 * Checks if a particular number, targetNumber, exists in blockChar (Row/Column/Square) number blockNumber
+	 * @param blockNumber
+	 * @param blockChar
+	 * @param targetNumber
+	 * @return
+	 */
+	public boolean checkForTargetNumber(int blockNumber, char blockChar, int targetNumber) {
+		if(blockChar == 'r'){
+			return searchForNumber(rows[blockNumber], targetNumber);
 		}
-		if(rowCollumnSquare == 'c'){
-			return searchForNumber(collumns[i], targetNumber);
+		if(blockChar == 'c'){
+			return searchForNumber(collumns[blockNumber], targetNumber);
 		}
-		if(rowCollumnSquare == 's'){
-			return searchForNumber(squares[i], targetNumber);
+		if(blockChar == 's'){
+			return searchForNumber(squares[blockNumber], targetNumber);
 		}
 		return false;
 	}
 
+	/**
+	 * Searches for a value in an array of Cells
+	 * @param cells
+	 * @param targetNumber
+	 * @return
+	 */
 	private boolean searchForNumber(Cell[] cells, int targetNumber) {
 		for(Cell currentCell : cells){
 			if(currentCell.getValue() == targetNumber){
@@ -187,36 +243,12 @@ public class DataStructure {
 		}
 		return false;
 	}
-	
-	public boolean[] addAlreadyFilledCells(boolean[] thisSquare, int targetSquare, char rowCollumnSquare) {
-		Cell[] rowCollumnSquareArray = new Cell[9];
-		if(rowCollumnSquare == 'r'){
-			rowCollumnSquareArray = rows[targetSquare];
-		}
-		if(rowCollumnSquare == 'c'){
-			rowCollumnSquareArray = collumns[targetSquare];
-		}
-		if(rowCollumnSquare == 's'){
-			rowCollumnSquareArray = squares[targetSquare];
-		}
-		for(int i = 0; i < rowCollumnSquareArray.length; i++){
-			if(rowCollumnSquareArray[i].getValue() != 0){
-				thisSquare[i] = false;
-			}
-		}
-		return thisSquare;
-	}
 
-	public Cell[] getRowCollumnSquare(int value, char rowCollumnSquare) {
-		switch(rowCollumnSquare){
-		case 'r' : return getRow(value);
-		case 'c' : return getCollumn(value);
-		case 's' : return getSquare(value);
-		}
-		return null;
-	}
-
+	/**
+	 * Outputs the rows in the right order to the command line
+	 */
 	public void outputRows(){
+		//Not used anywhere but useful for debugging
 		for(int i = 0; i < 9; i++){
 			Cell[] row = getRow(i);
 			for(int j = 0; j < 9; j++){
@@ -226,10 +258,14 @@ public class DataStructure {
 		}
 	}
 	
+	/**
+	 * Outputs the columns in the right order to the command line
+	 */
 	public void outputCollumns(){
+		//Not used anywhere but useful for debugging
 		int[][] puzzleArray = new int[9][9];
 		for(int i = 0; i < 9; i++){
-			Cell[] collumn = getCollumn(i);
+			Cell[] collumn = getColumn(i);
 			for(int j = 0; j < 9; j++){
 				puzzleArray[i][j] = (collumn[j].getValue());
 			}
@@ -243,17 +279,26 @@ public class DataStructure {
 		}
 	}
 	
+	/**
+	 * Outputs a particular square to the command line in a single line
+	 */
 	public void outputSquareAsLine(int squareNum){
+		//Not used anywhere but useful for debugging
 		Cell[] square = getSquare(squareNum);
 		for(int i = 0; i<9; i++){
 			System.out.print(square[i].getValue());
 		}
 	}
 	
+	/**
+	 * Saves the current state of the puzzle to the file at filePath
+	 * @param filePath
+	 */
 	public void saveCurrentState(String filePath) {
 		PrintWriter outFile = null;
+		//Start the printWriter
 		try {
-			outFile = new PrintWriter (new OutputStreamWriter (new FileOutputStream (filePath))); //Start the printWriter
+			outFile = new PrintWriter (new OutputStreamWriter (new FileOutputStream (filePath))); 
 		} catch (FileNotFoundException e) {
 			System.out.println("FileNotFoundException");
 			e.printStackTrace();
@@ -264,6 +309,18 @@ public class DataStructure {
 				outFile.print(row[j].getValue());
 			}
 			outFile.println();
+		}
+	}
+
+	/**
+	 * Outputs the rows all in one line, used only for when in batch mode
+	 */
+	public void outputRowsAsLine() {
+		for(int i = 0; i < 9; i++){
+			Cell[] row = getRow(i);
+			for(int j = 0; j < 9; j++){
+				System.out.print(row[j].getValue());
+			}
 		}
 	}
 	
