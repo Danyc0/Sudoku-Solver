@@ -1,4 +1,4 @@
-package uk.ac.aber.dcs.cs21120.sudoku;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

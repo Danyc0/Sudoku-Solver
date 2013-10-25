@@ -1,4 +1,4 @@
-package uk.ac.aber.dcs.cs21120.sudoku;
+
 import javax.swing.JFrame;
 
 /**

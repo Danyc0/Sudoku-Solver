@@ -1,4 +1,4 @@
-package uk.ac.aber.dcs.cs21120.sudoku;
+
 /**
  * @author Daniel Clark (dac46@aber.ac.uk)
  * The class which will solve the given sudoku puzzle

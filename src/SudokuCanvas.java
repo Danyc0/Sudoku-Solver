@@ -1,4 +1,4 @@
-package uk.ac.aber.dcs.cs21120.sudoku;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;

@@ -1,4 +1,4 @@
-package uk.ac.aber.dcs.cs21120.sudoku;
+
 /**
  * @author Daniel Clark (dac46@aber.ac.uk)
  * A Program To Solve Sudoku Puzzles for CS21120

@@ -1,4 +1,4 @@
-package uk.ac.aber.dcs.cs21120.sudoku;
+
 /**
  * @author Daniel Clark (dac46@aber.ac.uk)
  * The class that stores all the data about any particular cell in the grid
