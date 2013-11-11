@@ -39,7 +39,7 @@ public class Solver {
 	 */
 	public void importFile(String filePath){
 		puzzleGrid = new DataStructure(filePath);
-		updateAllPensilMarks();
+		updateAllPencilMarks();
 	}
 	
 	/**
@@ -61,7 +61,7 @@ public class Solver {
 		//Solving loop runs 10 times, should be enough to solve anything in the likely scope
 		//See documentation for why this is so basic and how i originally planned to implement it
 		while(count < 10){
-			updateAllPensilMarks();
+			updateAllPencilMarks();
 			insertPairs();
 			completeSingles();
 			count++;
@@ -73,15 +73,15 @@ public class Solver {
 	 */
 	private void insertPairs() {
 		insertPointingPairs('r');
-		updateAllPensilMarks();
+		updateAllPencilMarks();
 		insertPointingPairs('c');
-		updateAllPensilMarks();
+		updateAllPencilMarks();
 		insertNakedMultiples(2, 'r');
-		updateAllPensilMarks();
+		updateAllPencilMarks();
 		insertNakedMultiples(2, 'c');
-		updateAllPensilMarks();
+		updateAllPencilMarks();
 		insertNakedMultiples(2, 's');
-		updateAllPensilMarks();
+		updateAllPencilMarks();
 	}
 
 	/**
@@ -102,7 +102,7 @@ public class Solver {
 				case 's' : block = puzzleGrid.getSquare(i); break;
 			}
 			//Gets all the cells that have the appropriate number of pencil marks
-			Cell[] multipleCells = getCellsWithMultiplePensilMarks(block, multiple);
+			Cell[] multipleCells = getCellsWithMultiplePencilMarks(block, multiple);
 			
 			insertMultiples(multiple, multipleCells, blockChar, i);
 		}
@@ -114,7 +114,7 @@ public class Solver {
 	 * @param multiple
 	 * @return
 	 */
-	private Cell[] getCellsWithMultiplePensilMarks(Cell[] block, int multiple) {
+	private Cell[] getCellsWithMultiplePencilMarks(Cell[] block, int multiple) {
 		//Create an array to store the cells that contain the appropriate number of pencil marks
 		Cell[] multipleCells = new Cell[9];
 		int multipleCount = 0;
@@ -122,9 +122,9 @@ public class Solver {
 			Cell currentCell = block[j];
 			//If cell doesn't already have a firm value
 			if(currentCell.getValue() == 0){
-				int[] pensilMarks = currentCell.getPencilMarks();
-				int numPensilMarks = countNonZeros(pensilMarks);
-				if(numPensilMarks == multiple){
+				int[] pencilMarks = currentCell.getPencilMarks();
+				int numPencilMarks = countNonZeros(pencilMarks);
+				if(numPencilMarks == multiple){
 					multipleCells[multipleCount] = currentCell;
 					multipleCount++;
 				}
@@ -148,18 +148,18 @@ public class Solver {
 				for(int k = (j+1); k < multipleCells.length; k++){
 					if(multipleCells[k] != null){
 						int[] jPencilMarks = multipleCells[j].getPencilMarks();
-						int[] kPensilMarks = multipleCells[k].getPencilMarks();
+						int[] kPencilMarks = multipleCells[k].getPencilMarks();
 						boolean areEqual = true;
 						//If the 2 cells don't have the right amount of the same pencil marks, return false
 						for(int l = 0; l < multiple; l++){
-							if(jPencilMarks[l] != kPensilMarks[l]){
+							if(jPencilMarks[l] != kPencilMarks[l]){
 								areEqual = false;
 							}
 						}
 						if(areEqual){
 							Cell[] cellArray = {multipleCells[j], multipleCells[k]};
 							for(int n = 0; n < multiple; n++){
-								//Remove all pencil mark occurrences of jPensilMarks[n] in blockChar (Row/Column/Square)
+								//Remove all pencil mark occurrences of jPencilMarks[n] in blockChar (Row/Column/Square)
 								//number i, EXCEPT ones in cells that exist in cellArray
 								removeOccurencesExcept(blockChar, i, jPencilMarks[n], cellArray);
 							}
@@ -268,7 +268,7 @@ public class Solver {
 				if(!found && block[i].getValue() == 0){
 					//System.out.println("Removing " + value + " from " + rowCollumnSquareChar + commonBlockNumber + " cell " + i);
 					block[i].removePencilMark(value);
-					updateAllPensilMarks();
+					updateAllPencilMarks();
 				}
 			}
 		}
@@ -280,7 +280,7 @@ public class Solver {
 	private void completeSingles() {
 		int count = 0;
 		while(count < 10){
-			updateAllPensilMarks();
+			updateAllPencilMarks();
 			insertHiddenSingles();
 			insertNakedSingles();
 			count ++;
@@ -290,7 +290,7 @@ public class Solver {
 	/**
 	 * Update the pencil marks for each cell
 	 */
-	private void updateAllPensilMarks(){
+	public void updateAllPencilMarks(){
 		for(int i = 0; i<9; i++){
 			for(int j = 0; j<9; j++){
 				updatePencilMarkInCell(i, j, 'r');
@@ -314,7 +314,7 @@ public class Solver {
 	 * @param blockChar
 	 */
 	private void hiddenSinglesBlock(char blockChar) {
-		updateAllPensilMarks();
+		updateAllPencilMarks();
 		for(int i = 0; i < 9; i++){
 			for(int j = 0; j < 9; j++){
 				Cell[] occurences = getOccurences((i+1), blockChar, j);

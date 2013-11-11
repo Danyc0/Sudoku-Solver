@@ -18,7 +18,7 @@ public class Cell{
 		this.row = x;
 		this.collumn = y;
 		this.value = value;
-		//Lists all possible pensil marks to be possible
+		//Lists all possible pencil marks to be possible
 		this.pencilMarks = makeTrueArray(9);
 	}
 	
