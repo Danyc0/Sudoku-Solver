@@ -1,4 +1,3 @@
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -14,7 +13,7 @@ import java.util.Scanner;
 
 public class DataStructure {
 	private Cell[][] rows;
-	private Cell[][] collumns;
+	private Cell[][] columns;
 	private Cell[][] squares;
 	
 	/**
@@ -40,7 +39,7 @@ public class DataStructure {
 	 */
 	private void initializeArrays() {
 		rows = new Cell[9][9];
-		collumns = new Cell[9][9];
+		columns = new Cell[9][9];
 		squares = new Cell[9][9];
 	}
 	
@@ -69,7 +68,7 @@ public class DataStructure {
 	 * @param filePath
 	 * @return
 	 */
-	public int[][] importFile(String filePath){
+	private int[][] importFile(String filePath){
 		int[][] arrayPuzzleGrid = new int[9][9];
 		Scanner file = null;
 		try {
@@ -102,7 +101,7 @@ public class DataStructure {
 	 * @param line
 	 * @return
 	 */
-	public String normaliseLength (String line){
+	private String normaliseLength(String line){
 		int lineLength = line.length();
 		if(lineLength < 9){
 			for(int k = 0; k < (9 - lineLength); k++){
@@ -116,13 +115,13 @@ public class DataStructure {
 	 * Populates the DataStructure with data from a 2D array of integer values
 	 * @param grid
 	 */
-	public void populate(int[][]grid){
+	private void populate(int[][]grid){
 		int count[] = new int[9];
 		for(int i = 0; i<9; i++){
 			for(int j = 0; j<9; j++){
 				Cell myCell = new Cell(i, j, grid[i][j]);
 				rows[i][j] = myCell;
-				collumns[j][i] = myCell;
+				columns[j][i] = myCell;
 				int countNum;
 				if(i<3){
 					if(j<3){
@@ -171,8 +170,8 @@ public class DataStructure {
 		return this.rows;
 	}
 	
-	public Cell[] getColumn(int collumnNum){
-		return this.collumns[collumnNum];
+	public Cell[] getColumn(int columnNum){
+		return this.columns[columnNum];
 	}
 
 	public Cell[] getSquare(int squareNum) {
@@ -222,7 +221,7 @@ public class DataStructure {
 			return searchForNumber(rows[blockNumber], targetNumber);
 		}
 		if(blockChar == 'c'){
-			return searchForNumber(collumns[blockNumber], targetNumber);
+			return searchForNumber(columns[blockNumber], targetNumber);
 		}
 		if(blockChar == 's'){
 			return searchForNumber(squares[blockNumber], targetNumber);

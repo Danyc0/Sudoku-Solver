@@ -1,4 +1,3 @@
-
 /**
  * @author Daniel Clark (dac46@aber.ac.uk)
  * The class which will solve the given sudoku puzzle
@@ -291,7 +290,7 @@ public class Solver {
 	/**
 	 * Update the pencil marks for each cell
 	 */
-	public void updateAllPensilMarks(){
+	private void updateAllPensilMarks(){
 		for(int i = 0; i<9; i++){
 			for(int j = 0; j<9; j++){
 				updatePencilMarkInCell(i, j, 'r');
@@ -377,11 +376,11 @@ public class Solver {
 	 * Update the pencil marks in a particular cell
 	 * @param i
 	 * @param j
-	 * @param rowCollumnSquare
+	 * @param blockChar
 	 */
-	private void updatePencilMarkInCell(int i, int j, char rowCollumnSquare) {
+	private void updatePencilMarkInCell(int i, int j, char blockChar) {
 		Cell[] block = null;
-		switch(rowCollumnSquare){
+		switch(blockChar){
 		case 'r' : block = puzzleGrid.getRow(i); break;
 		case 'c' : block = puzzleGrid.getColumn(i); break;
 		case 's' : block = puzzleGrid.getSquare(i); break;

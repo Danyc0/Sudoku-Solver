@@ -1,4 +1,3 @@
-
 /**
  * @author Daniel Clark (dac46@aber.ac.uk)
  * A Program To Solve Sudoku Puzzles for CS21120
