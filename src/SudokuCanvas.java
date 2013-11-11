@@ -38,7 +38,7 @@ public class SudokuCanvas extends JPanel {
 			for (int j = 0; j<9; j++){
 				Cell currentCell = solver.getRow(i)[j];
 				int currentValue = currentCell.getValue();
-				int[] currentPensilMarks = currentCell.getPencilMarks();
+				int[] currentPencilMarks = currentCell.getPencilMarks();
 				g.setColor(new Color(0, 255, 0));
 				g.setFont(new Font("SolvedFont", 10, 25));
 				//Draw a small square to put the number in
@@ -51,11 +51,11 @@ public class SudokuCanvas extends JPanel {
 				else{
 					//Write in all the pencil marks for that cell
 					g.setColor(new Color(0, 0, 255));
-					g.setFont(new Font("PensilFont", 10, 10));
+					g.setFont(new Font("PencilFont", 10, 10));
 					for(int k = 0; k<9; k++){
-						if(currentPensilMarks[k] != 0){
+						if(currentPencilMarks[k] != 0){
 							int x = 0, y = 0;
-							switch(currentPensilMarks[k]){
+							switch(currentPencilMarks[k]){
 								case 1 : x = 10+j*45; y = 20+i*45; break;
 								case 2 : x = 20+j*45; y = 20+i*45; break;
 								case 3 : x = 30+j*45; y = 20+i*45; break;
@@ -66,7 +66,7 @@ public class SudokuCanvas extends JPanel {
 								case 8 : x = 20+j*45; y = 40+i*45; break;
 								case 9 : x = 30+j*45; y = 40+i*45; break;
 							}
-							g.drawString(Integer.toString(currentPensilMarks[k]), x,y);
+							g.drawString(Integer.toString(currentPencilMarks[k]), x,y);
 						}
 					}
 				}

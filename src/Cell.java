@@ -7,7 +7,7 @@
 public class Cell{
 	int value;
 	int row, collumn;
-	boolean[] pensilMarks;
+	boolean[] pencilMarks;
 	
 	/**
 	 * Constructs a new cell with it's position and Svalue
@@ -19,8 +19,8 @@ public class Cell{
 		this.row = x;
 		this.collumn = y;
 		this.value = value;
-		//Lists all possible pensil marks to be possible
-		this.pensilMarks = makeTrueArray(9);
+		//Lists all possible pencil marks to be possible
+		this.pencilMarks = makeTrueArray(9);
 	}
 	
 	/**
@@ -55,7 +55,7 @@ public class Cell{
 	 * @param value
 	 */
 	public void removePencilMark(int value){
-		pensilMarks[(value-1)] = false;
+		pencilMarks[(value-1)] = false;
 	}
 	
 	/**
@@ -65,8 +65,8 @@ public class Cell{
 	public int[] getPencilMarks(){
 		int[] values = new int[9];
 		int count = 0;
-		for(int i = 0; i<pensilMarks.length; i++){
-			if(pensilMarks[i] == true){
+		for(int i = 0; i<pencilMarks.length; i++){
+			if(pencilMarks[i] == true){
 				values[count] = (i+1);
 				count++;
 			}
